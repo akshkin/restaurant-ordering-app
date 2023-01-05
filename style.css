@@ -1,0 +1,147 @@
+*{
+  box-sizing: border-box;
+}
+
+body{
+  font-family: 'Smythe', cursive;
+  height: 100vh;
+  margin: 0;
+  padding: 1em;
+}
+
+header{
+  width: 100%;
+  background-image: url("./images/bg-img.jpg");
+  background-position: right;
+  background-size: cover;
+  color: white;
+  padding: 1em;
+  margin: 0;
+  height: 167px;
+}
+
+button{
+  cursor: pointer;  
+}
+
+main{
+  padding: 1em;
+}
+h1, h2, h3, h4{
+  margin-bottom: 0;
+}
+.btn{
+  background-color: #16DB99;
+  color: white;
+  font-family: 'Verdana';
+  border: 0;
+  width: 100%;
+  padding: 0.8em;
+}
+
+dialog{
+  font-family: 'Verdana';
+  filter: drop-shadow(5.18654px 5.18654px 255.437px rgba(0, 0, 0, 0.5));
+  border: 0;  
+  padding: 1em;
+  width: 90%;
+  max-width: 400px;
+  margin-inline: auto;
+  transition: 0.3s ease-in;
+  text-align: center;
+}
+dialog input{
+  display: block;
+  font-family: inherit;
+  margin-block: 1em;
+  height: 41px;
+  width: 100%;
+  padding: 0.5em;
+  border: 1px solid #757575;
+}
+dialog .close-btn{
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.5em;
+  font-size: 1.4rem;
+}
+.menu-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5em;
+  height: 140px;
+  border-bottom: 1px solid #D2D2D2;
+}
+.menu-content{
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.emoji{
+  font-size: 78.72px;
+  margin-right: 0.1em;
+  width: 40%;
+}
+
+.add-btn{
+  background-color: transparent;
+  border-radius: 50%;
+  border: 1px solid #D2D2D2;  
+}
+.cart-title{
+  display: none;
+  text-align: center;
+}
+.order{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+}
+
+.order .order-details{
+  display: flex;
+  align-items: baseline;
+}
+.quantity{
+  width: 30px;
+}
+.remove-btn{
+  color:#BBBBBB;
+  border: 0;
+  background-color: transparent;
+  font-size: 0.75rem;
+}
+.total-price{
+  display: flex;
+  justify-content: space-between;
+  padding-block: 1em;
+}
+
+.message{
+  text-align: center;
+  background-color: #ECFDF5;
+  color: #065F46;
+  padding: 1em;
+}
+
+@media (min-width: 900px) {
+  html{
+    font-size: 120%;
+  }
+  main{
+    display: flex;
+    justify-content: space-evenly;
+  }
+  #menu-items{
+    width: 50%;
+  }
+  #order{
+    width: 40%;
+  }
+
+}
+
