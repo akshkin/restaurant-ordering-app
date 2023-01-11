@@ -1,125 +1,226 @@
 import menuArray from "/data.js"
+import discount from "./discount.js"
+import rating from "./rating.js"
 
 const main = document.querySelector("#main")
 const menuItems = document.getElementById("menu-items")
 const modal = document.getElementById("modal")
+
 const cart = document.getElementById("cart")
+const cartTitle = document.getElementById("cart-title")
 const total = document.getElementById("total")
 let order = []
 
-let html = ""
-menuArray.forEach(item => {
-  html += `
-    <div class="menu-item" data-id="${item.id}">
-      <div class="menu-content">
-        <p class="emoji">${item.emoji}</p>
-        <div>
-          <h3 class="name">${item.name}</h3>
-          <p>${item.ingredients}</p>
-          <p class="price">$${item.price}
+function renderMenuItems(){
+    let html = ""
+    menuArray.forEach(item => {
+      html += `
+        <div class="menu-item" data-id="${item.id}">
+          <div class="menu-content">
+            <p class="emoji">${item.emoji}</p>
+            <div>
+              <h3 class="name">${item.name}</h3>
+              <p>${item.ingredients}</p>
+              <p class="price">$${item.price}
+            </div>
+          </div>
+          <button type="button" class="add-btn" data-add="${item.id}" aria-label="add to cart">+</button>
         </div>
-      </div>
-      <button type="button" class="add-btn" data-add="${item.id}">+</button>
-    </div>
-  `
-}) 
-menuItems.innerHTML = html
-
-document.addEventListener("click", function(event){
-    const item = menuArray.find(menuItem => menuItem.id == parseInt(event.target.parentElement.dataset.id)
-    )
-    if(item){
-      addToOrder(item)
-      calculateTotal() 
-    }
-    const completeOrderBtn = event.target.closest(".complete-order-btn")
-    if(completeOrderBtn){
-      completeOrderBtn.addEventListener("click", () => {
-        
-        modal.showModal()
-        document.getElementById("close-btn")?.addEventListener("click", () => {
-          modal.close()
-        })
-        document.getElementById("form").addEventListener("submit", (event) => {
-          event.preventDefault()
-          modal.close()
-          cart.innerHTML = ""
-          total.innerHTML = ""
-          const message = document.createElement("div")
-          message.setAttribute("class", "message")
-          message.innerText = "Thanks, your order is on its way!"
-          menuItems.append(message)
-        })
+      `
+    }) 
+    menuItems.innerHTML = html
+    
+    const addBtns = Array.from(document.getElementsByClassName("add-btn")) 
+    console.log(addBtns)
+    addBtns.forEach(btn => {
+      btn.addEventListener("click", (event) => {
+          const item = menuArray.find(menuItem => menuItem.id == parseInt(event.target.dataset.add)
+          )
+          if(item){
+              addToOrder(item)
+              calculateTotal() 
+          } 
       })
+    })
+
+}
+
+renderMenuItems()
+
+function renderOrder(){
+    let html = ""
+    if(!order.length) return html = ""
+    order.forEach(item => {
+      html +=`
+        <div class="order" style="transform: translateX(0%)" id="${item.id}">
+          <div class="order-details">
+            <p class="order-name">${item.name}</p>
+            <button class="remove-btn" data-remove="${item.id}">remove</button>
+            <span>qty: <input data-quantity="${item.id}"  type="number"     value="${item.quantity}" class="quantity"/></span>
+          </div>
+          <span id="item-${item.id}" class="order-price">$${item.newPrice ? item.newPrice : item.price}</span>
+        </div>
+      `  
+    })
+    return cart.innerHTML = html
+} 
+
+cart.addEventListener("click", event => {
+    const removeBtn = event.target.dataset.remove
+   
+    if(removeBtn){
+        const orderDiv = event.target.parentElement.parentElement
+        orderDiv.classList.add("active")
+        console.log(orderDiv)
+        order = order.filter(orderItem => orderItem.id != removeBtn)
+
+        renderOrder()
+        calculateTotal()
+        if (!order.length){
+            noStyle()
+        }
+    }
+})
+
+function closeModal(modal){
+    modal.setAttribute("closing", "")
+    modal.addEventListener("animationend", () => {
+        modal.removeAttribute("closing")
+        modal.close()         
+    }, {once:true})
+}
+
+main.addEventListener("click", function(event){
+    const completeOrderBtn = event.target.closest(".complete-order-btn")
+
+    if(completeOrderBtn){
+        modal.showModal()        
+
+        document.getElementById("close-btn")?.addEventListener("click", () => {
+           closeModal(modal)
+        })
+
+        document.getElementById("form").addEventListener("submit", (event) => {
+            event.preventDefault()
+            modal.close()
+            noStyle()
+            order = []
+            const name = event.target[0].value
+            const message = document.getElementById("message")
+            message.style.display = "block"
+            message.innerText = `Thanks ${name}, your order is on its way!`
+            const formFields = event.target
+            for(let field of formFields){
+                field.value = ""
+            }
+          
+
+          setTimeout(() => {
+              message.style.display = "none"
+          }, 15000)
+
+          const reviewModal = document.getElementById("review-modal")
+          
+          setTimeout(() => {
+              reviewModal.showModal()
+              rating()
+              const starDiv = document.getElementById("stars")
+              
+              document.getElementById("no-thanks-btn").addEventListener("click", () => reviewModal.close())
+    
+              document.getElementById("rating-submit").addEventListener("click", () => {
+                starDiv.innerHTML = `<p>Thank you for your feedback</p>` 
+                setTimeout(() => {
+                      closeModal(reviewModal)
+                }, 1800)
+              })
+  
+          }, 2000)
+
+        }) 
+        
     }
 
 })
 
+
 function calculateTotal(){
-  const totalPriceArray = Array.from(document.getElementsByClassName("order-price"))
-  let total = 0
-  let totalPrice = totalPriceArray.map((item) => {
-    const itemPrice = parseInt(item.innerText.slice(1))
-    return total += itemPrice   
-  })  
-  totalPrice = totalPrice[totalPrice.length - 1]
-  document.getElementById("total-price").innerText = `$${totalPrice}`
+    const totalPrice = order.reduce((acc, current) => {
+        if(current.newPrice){
+            return acc + current.newPrice
+        }
+        return acc + current.price 
+    },0) 
+    const discountAmount = discount(order, totalPrice)
+    const discountHtml = `<span>discount</span> <span>-$${discountAmount}</span>`
+    const discountEl = document.getElementById("discount") 
+    discountEl.innerHTML = `${discountAmount ? discountHtml : ""}`
+    const newTotal = totalPrice - discountAmount
+    document.getElementById("total-price").innerText = `$${newTotal ? newTotal : totalPrice}`
 }
 
-document.addEventListener("change", (event) => {
-  const thisProduct = order.find(item => item.id === parseInt(event.target.dataset.quantity))
-  const updatedPrice = parseInt(thisProduct?.price * event.target.value)
- 
-  document.getElementById(`${thisProduct?.id}`).innerText = `$${updatedPrice}`
-  calculateTotal()
+function noStyle(){
+    cart.innerHTML = ""
+    cartTitle.style.display = "none"
+    cart.style.border = "none"
+    cart.style.transform = "translateX(0%)"
+    total.innerHTML = ""
+}
+
+cart.addEventListener("change", (event) => {
+    const thisProduct = order.find(item => item.id === parseInt(event.target.dataset.quantity))
+
+    if(thisProduct){
+        thisProduct.quantity = event.target.value
+
+        if (parseInt(event.target.value) === 0){
+            order = order.filter(item => item.id !== thisProduct.id)
+            renderOrder()
+            calculateTotal()
+            if (!order.length){
+              noStyle()
+            }
+        }
+    }
+    order = order.map(item => {
+        if(thisProduct === item){
+            return {...thisProduct, quantity: event.target.value, newPrice: thisProduct.quantity * thisProduct.price}
+        }
+        return item
+    })
+    const updatedPrice = parseInt(thisProduct?.newPrice)
+  
+    document.getElementById(`item-${thisProduct?.id}`).innerText = `$${updatedPrice}`
+    renderOrder()
+    calculateTotal()
 })
 
 
 function addToOrder(item){
-  const cartRow = document.createElement("div")
-  const alreadyInCart = order.find(cartItem => cartItem.id === item.id)
- 
-  if(!alreadyInCart){  
-    order = [...order, item]  
-    console.log(order)
-    const cartRowContent =`
-      <div class="order" id="${item.name}">
-        <div class="order-details">
-          <p class="order-name">${item.name}</p>
-          <button class="remove-btn">remove</button>
-          <span>qty: <input data-quantity="${item.id}"  type="number"     value="1" class="quantity"/></span>
-        </div>
-        <span id="${item.id}" class="order-price">$${item.price}</span>
-        </div>
-      ` 
-    cartRow.innerHTML += cartRowContent
-    if(cartRow.innerHTML){
-      cart.style.borderBottom = "1px solid black"
-      document.querySelector(".cart-title").style.display = "block"
-    }
-    cart.appendChild(cartRow)
+    const alreadyInCart = order.find(cartItem => cartItem.id === item.id)
+   
+    if(!alreadyInCart){  
+        order = [...order, {...item, quantity: 1}]   
+        renderOrder()
 
-    const totalHtml = `
-        <div class="total-price"><span>Total price:</span> <span id="total-price"></span></div>
-        <button id="complete-order-btn" class="complete-order-btn btn">Complete order</button>
-      `
-    total.innerHTML = totalHtml  
-  
+      if(cart.innerHTML){
+          cart.style.transform = "translateX(0%)"
+          cart.style.borderBottom = "1px solid black"        
+          cartTitle.style.display = "block"
+      }
+      const totalHtml = `
+          <div class="justify-space-between total-price">
+            <span>Total price:</span> <span id="total-price"></span>
+          </div>
+          <button id="complete-order-btn" class="complete-order-btn btn">
+            Complete order
+          </button>
+        `
+      total.innerHTML = totalHtml 
+     
   } else if(order.includes(alreadyInCart)) {
-    alert("Item already in cart")
+      alert("Item already in cart")
   }  
-
-  const removeBtn = document.getElementsByClassName("remove-btn")
-
-  for(let btn of removeBtn){
-    btn.addEventListener("click", function(event){
-      const target = event.target.parentElement.parentElement
-      target.remove()
-      order.filter(orderItem => orderItem.itemName !== item.itemName)
-      calculateTotal()
-    })
-  }
-
 }
 
  
