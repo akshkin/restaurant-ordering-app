@@ -10,29 +10,42 @@
 </head>
 <body>
   <dialog id="modal">
-    <h4>Enter card details</h4>
-    <span aria-label="close modal" id="close-btn" class="close-btn">&times;</span>
-    <form id="form">
-      <input type="text" required placeholder="Enter your name" aria-label="Name on card"/>
-      <input type="text" required placeholder="Enter card number" aria-label="card number"/>
-      <input required type="number" minlength="3" maxlength="3" aria-label="cvv" placeholder="Enter cvv"/>
-      <button class="pay-btn btn" id="pay-btn">Pay</button>
-    </form>
+      <h4>Enter card details</h4>
+      <button aria-label="close modal" id="close-btn" class="close-btn">&times;</button>
+      <form id="form">
+          <input type="text" required placeholder="Enter your name" aria-label="Name on card" id="name"/>
+          <input type="number" required placeholder="Enter card number" aria-label="card number"/>
+          <input required type="number" minlength="3" maxlength="3" aria-label="cvv" placeholder="Enter cvv"/>
+          <button class="pay-btn btn" id="pay-btn">Pay</button>
+      </form>
+  </dialog>
+  <dialog id="review-modal">
+      <h4>Please take a moment to leave us a rating! It would help us improve ourselves.</h4> 
+      <div id="stars">
+      </div>
+      <button id="rating-submit">Submit</button>
+      <button id="no-thanks-btn">No thanks!</button>   
   </dialog>
   <header>
-    <h1>Jimmy's Diner</h1>
-    <p>The best burgers and pizzas in town</p>
+      <h1>Jimmy's Diner</h1>
+      <p>The best burgers and pizzas in town</p>
   </header>
+  <div class="deal-container">
+      <p class="deal">MEAL-DEAL: Buy a drink with a food item and get 15% off!</p>
+  </div>
   <main id="main" class="main">
-    <div id="menu-items"></div>
-    <div id="order">
-      <div id="cart" class="cart">
-        <h4 class="cart-title">Your order</h4>
+      <div id="menu-items"></div>
+      <div id="message" class="message"></div>
+      <div id="order">
+          <h4 id="cart-title">Your order</h4>
+          <div id="cart" class="cart">
+          </div>
+          <div id="discount" class="justify-space-between"></div>   
+          <div id="total" class="total"></div> 
       </div>
-      <div id="total" class="total"></div>    
-    </div>
   </main>
   
   <script src="/index.js" type="module"></script>
+  <script src="/rating.js" type="module"></script>
 </body>
 </html>
