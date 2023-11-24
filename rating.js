@@ -17,11 +17,16 @@ export default function rating() {
 
   function renderChanges(rating) {
     for (let i = 0; i < rating; i++) {
-      starDiv.children[i].classList.add("star-filled");
+      starDiv.children[
+        i
+      ].innerHTML = `<img src="/images/star-filled.svg" alt="star"/>`;
     }
     //non-highlight stars after the rating
     for (let i = rating; i < 5; i++) {
-      starDiv.children[i].classList.remove("star-filled");
+      starDiv.children[
+        i
+      ].innerHTML = `<img src="/images/star-outline.svg" alt="star"/>`;
+      console.log(starDiv.children[i]);
     }
   }
 

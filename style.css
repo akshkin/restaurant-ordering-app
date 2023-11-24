@@ -184,6 +184,7 @@ dialog .close-btn {
 .message {
   display: none;
   text-align: center;
+  align-self: start;
   background-color: #ecfdf5;
   color: #065f46;
   padding: 1em;
@@ -199,12 +200,10 @@ dialog .close-btn {
   color: white;
   padding: 0.5em 1.5em;
 }
+
 .outlined-star {
   cursor: pointer;
   margin-right: 0.3em;
-}
-.star-filled {
-  background-image: url("/images/star-filled.svg");
 }
 
 @keyframes move {
@@ -243,6 +242,9 @@ dialog .close-btn {
 @media (min-width: 900px) {
   html {
     font-size: 120%;
+  }
+  #review-modal {
+    font-size: 100%;
   }
   header {
     height: 250px;
