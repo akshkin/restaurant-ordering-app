@@ -26,7 +26,6 @@ export default function rating() {
       starDiv.children[
         i
       ].innerHTML = `<img src="/images/star-outline.svg" alt="star"/>`;
-      console.log(starDiv.children[i]);
     }
   }
 
@@ -49,7 +48,6 @@ export default function rating() {
 
   function onMouseClick(event) {
     let star = event.target.parentElement;
-
     let isStar = star.classList.contains("outlined-star");
     if (isStar) {
       let rating = event.target.parentElement.dataset.rating;
