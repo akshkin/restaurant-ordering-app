@@ -127,7 +127,7 @@ function changeQuantity(event, id) {
     thisProduct.quantity = event.target.value;
 
     // check if value is less than 0, if 0 remove product
-    if (parseInt(event.target.value) < 0) {
+    if (parseInt(event.target.value) < 1) {
       order = order.filter((item) => item.id !== thisProduct.id);
       renderOrder();
       calculateTotal();
