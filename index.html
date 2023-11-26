@@ -1,50 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Smythe&display=swap" rel="stylesheet">
-  <title>Document</title>
-</head>
-<body>
-  <dialog id="modal">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Smythe&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <dialog id="modal">
       <h4>Enter card details</h4>
-      <button aria-label="close modal" id="close-btn" class="close-btn">&times;</button>
+      <button aria-label="close modal" id="close-btn" class="close-btn">
+        &times;
+      </button>
       <form id="form">
-          <input type="text" required placeholder="Enter your name" aria-label="Name on card" id="name"/>
-          <input type="number" required placeholder="Enter card number" aria-label="card number"/>
-          <input required type="number" minlength="3" maxlength="3" aria-label="cvv" placeholder="Enter cvv"/>
-          <button class="pay-btn btn" id="pay-btn">Pay</button>
+        <input
+          type="text"
+          required
+          placeholder="Enter your name"
+          aria-label="Name on card"
+          id="name"
+        />
+        <input
+          type="number"
+          required
+          placeholder="Enter card number"
+          aria-label="card number"
+        />
+        <input
+          required
+          type="number"
+          minlength="3"
+          maxlength="3"
+          aria-label="cvv"
+          placeholder="Enter cvv"
+        />
+        <button class="pay-btn btn" id="pay-btn">Pay</button>
       </form>
-  </dialog>
-  <dialog id="review-modal">
-      <h4>Please take a moment to leave us a rating! It would help us improve ourselves.</h4> 
-      <div id="stars">
-      </div>
+    </dialog>
+    <dialog id="review-modal">
+      <h4>
+        Please take a moment to leave us a rating! It would help us improve
+        ourselves.
+      </h4>
+      <div id="stars"></div>
       <button id="rating-submit">Submit</button>
-      <button id="no-thanks-btn">No thanks!</button>   
-  </dialog>
-  <header>
+      <button id="no-thanks-btn">No thanks!</button>
+    </dialog>
+    <header>
       <h1>Jimmy's Diner</h1>
       <p>The best burgers and pizzas in town</p>
-  </header>
-  <div class="deal-container">
-      <p class="deal">MEAL-DEAL: Buy a drink with a food item and get 15% off!</p>
-  </div>
-  <main id="main" class="main">
+    </header>
+    <div class="deal-container">
+      <p class="deal">
+        MEAL-DEAL: Buy a drink with a food item and get 15% off!
+      </p>
+    </div>
+    <main id="main" class="main">
       <div id="menu-items"></div>
       <div id="message" class="message"></div>
-      <div id="order">
-          <h4 id="cart-title">Your order</h4>
-          <div id="cart" class="cart">
+      <div id="order" hidden>
+        <h4 id="cart-title">Your order</h4>
+        <div id="cart" class="cart"></div>
+        <div id="discount" class="justify-space-between"></div>
+        <div id="total" class="total">
+          <div class="justify-space-between total-price">
+            <span>Total price:</span> <span id="total-price"></span>
           </div>
-          <div id="discount" class="justify-space-between"></div>   
-          <div id="total" class="total"></div> 
+          <button id="complete-order-btn" class="complete-order-btn btn">
+            Complete order
+          </button>
+        </div>
       </div>
-  </main>
-  
-  <script src="/index.js" type="module"></script>
-</body>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
 </html>
