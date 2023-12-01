@@ -17,7 +17,7 @@ This is a solution to Scrimba's solo project - Reastaurant-ordering-app
 ### Links
 
 - Solution URL: [here](https://github.com/akshkin/restaurant-ordering-app)
-- Live Site URL: [here](https://akshkin.github.io/restaurant-ordering-app/)
+- Live Site URL: [here](https://scrimba-restaurant-ordering.netlify.app)
 
 ## My process
 
