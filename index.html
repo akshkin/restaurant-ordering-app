@@ -28,20 +28,20 @@
           id="name"
         />
         <input
-          type="number"
+          type="text"
           required
           placeholder="Enter card number"
           aria-label="card number"
+          pattern="[0-9]{16}"
         />
         <input
           required
-          type="number"
-          minlength="3"
-          maxlength="3"
+          type="text"
+          pattern="[0-9]{3}"
           aria-label="cvv"
           placeholder="Enter cvv"
         />
-        <button class="pay-btn btn" id="pay-btn">Pay</button>
+        <button type="submit" class="pay-btn btn" id="pay-btn">Pay</button>
       </form>
     </dialog>
     <dialog id="review-modal">
